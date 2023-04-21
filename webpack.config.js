@@ -56,11 +56,11 @@ module.exports = {
     },
     proxy: {
       '/api': {
-        target: 'http://localhost:3000',
+        target: 'http://localhost:3500',
         secure: false,
       },
       '/socket.io': {
-        target: 'http://localhost:3000',
+        target: 'http://localhost:3500',
         secure: false,
       },
     },

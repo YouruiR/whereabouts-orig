@@ -3,9 +3,7 @@ import Sidebar from '../components/Sidebar';
 import Contacts from '../components/Contacts';
 import ChatPage from '../components/ChatPage';
 import TripImWatching from '../components/TripImWatching';
-import MapContainer from '../components/MapContainer';
 import MyTripCard from '../components/MyTripCard';
-import TripViewingCard from '../components/TripViewingCard';
 
 function Dashboard({ userInfo, setUserInfo }) {
   // hook for contacts per user

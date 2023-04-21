@@ -1,51 +1,40 @@
-import React, { useMemo, useState, useEffect } from "react";
-import { Map, InfoWindow, Marker, GoogleApiWrapper, Geocode } from "google-maps-react";
+import React from "react";
+import { GoogleMap, useJsApiLoader, Marker } from "@react-google-maps/api";
 
-// hard code API key. Keep safe
-const key = "AIzaSyBRzoiY1lCeVlXPEZELkqEdTehWIUcijms";
-
-function MapContainer ({trip}) {
-  // console.log('trip: ', trip);
-  // console.log('keys for trip: ', JSON.stringify(trip.start_lat));
-
-  // needs to be in sync with className="map-container" in css
-  const containerStyle = {
-    width: '700px',
-    height: '300px',
-  };
-
-  
-  const center = {
-    'lat': trip.start_lat,
-    'lng': trip.start_lng,
-  };
-
-  // hook to store coordinates & address:
-  // const [address, setAddress] = useState('');
-  // const [location, setLocation] = useState({ lat: null, lng: null });
-  
-  /* ** Note: ANYTHING rendered inside of the same div as Map container will be covered. Need to add components AROUND the container storing the Map component */
-  return (
-   <>
-
-    <div className="map">
-      <Map
-        sx={{ position: 'absolute', zIndex: -1 }}
-        containerStyle={containerStyle}
-        initialCenter={center}
-        google={google} 
-        zoom={14}>
-        <Marker name={'Current location'} />
-      </Map>
-      
-    </div>
-    
-   </>
-    
-  );
+const containerStyle = {
+  width: "700px",
+  height: "300px",
 };
- 
-export default GoogleApiWrapper({
-  apiKey: key
-})(MapContainer)
 
+function MapComponent({ trip }) {
+  const { isLoaded } = useJsApiLoader({
+    id: '6dd1b6720588ad3a',
+    googleMapsApiKey: 'AIzaSyA4GiNhPzyhXS98_ziVHrQLimw8VILXUuk',
+  });
+
+  const center = {
+    lat: Number(trip.start_lat),
+    lng: Number(trip.start_lng),
+  };
+
+  const [map, setMap] = React.useState(null);
+
+  const onUnmount = React.useCallback(function callback(map) {
+    setMap(null);
+  }, []);
+
+  return isLoaded ? (
+    <GoogleMap
+      mapContainerStyle={containerStyle}
+      center={center}
+      zoom={12}
+      onUnmount={onUnmount}
+    >
+      <Marker position={center}></Marker>
+    </GoogleMap>
+  ) : (
+    <></>
+  );
+}
+
+export default React.memo(MapComponent);
